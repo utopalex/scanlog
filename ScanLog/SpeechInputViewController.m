@@ -51,10 +51,50 @@ static NSString* const SKSAppKey = @"ba274267cf24d93df5550d0b7997294994318874436
 
 - (IBAction)sendToServer:(id)sender
 {
-    NSArray* taggedTokens = [self.crazy tagTokensInText:self.inputField.text];
-
-    self.inputField.text = @"";
+    NSMutableArray* nouns = [[NSMutableArray alloc] init];
+    for (ScanLogTaggedToken* token in [self.crazy tagTokensInText:self.inputField.text]) {
+        if([token.tag isEqualToString:@"Noun"]) {
+            [nouns addObject:token.token];
+        }
+    }
+    
+    if (nouns.count > 0) {
+        [self putElement:nouns.firstObject];
+    }
+    
     [self resetSession];
+}
+
+-(void)putElement:(NSString*)text
+{
+    NSURL* url = [NSURL URLWithString:@"https://e2213kres9.execute-api.us-west-2.amazonaws.com/prod/shopping_list"];
+    NSString* uuid = @"8DACBDFB-8AC8-4644-853B-8EA088E4579D";
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:60.0];
+
+    [request setURL:url];
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setHTTPMethod:@"PATCH"];
+    
+    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: text, @"text",
+                             uuid, @"uuid",
+                             nil];
+
+    NSError* error;
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
+    [request setHTTPBody:postData];
+    
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+
+    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSLog(@"Here we are!");
+    }];
+    
+    [postDataTask resume];
 }
 
 #pragma mark SKTransactionDelegate
