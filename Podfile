@@ -3,5 +3,4 @@ use_frameworks!
 
 pod 'SpeechKit'
 pod 'Mantle', '~> 2.0'
-pod 'Parsimmon', :path => '~/dev/native/Parsimmon'
-
+pod 'Parsimmon', :git => 'https://github.com/mirkokozmosz/ParsimmonFork.git'
