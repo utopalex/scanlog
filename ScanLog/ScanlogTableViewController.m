@@ -17,14 +17,15 @@
 
 @implementation ScanlogTableViewController
 
-NSString* const url = @"https://e2213kres9.execute-api.us-west-2.amazonaws.com/prod/eventlog?uuid=a2bc87fb-3047-4f24-bdb7-20c3fe40da1d";
+static NSString* const kUrlFormat = @"https://e2213kres9.execute-api.us-west-2.amazonaws.com/prod/eventlog?uuid=a2bc87fb-3047-4f24-bdb7-20c3fe40da1d&ts=%f";
 
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super initWithCoder:coder];
     if (self) {
         //
-        NSURLSessionDataTask* task = [[NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]] dataTaskWithURL:[NSURL URLWithString:url] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSString* currentUrl = [NSString stringWithFormat:kUrlFormat, [[NSDate dateWithTimeIntervalSinceNow:(-14*7*24*60*60)] timeIntervalSince1970]];
+        NSURLSessionDataTask* task = [[NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]] dataTaskWithURL:[NSURL URLWithString:currentUrl] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             if (data && ! error) {
                 NSArray* array = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 self.products = [MTLJSONAdapter modelsOfClass:ScanProduct.class fromJSONArray:array error:nil];
