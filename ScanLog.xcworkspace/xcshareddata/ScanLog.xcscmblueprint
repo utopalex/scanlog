@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "1CA9F62C6727ABFB2648CB00729526D9E9BBA0A8",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "1CA9F62C6727ABFB2648CB00729526D9E9BBA0A8" : 0,
+    "1A573F7EA2F8506EB4EF9F99DFF3DF06E37D43ED" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "3989EE2C-99C1-46AD-989D-E8158F2FC1C8",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "1CA9F62C6727ABFB2648CB00729526D9E9BBA0A8" : "scanlog\/",
+    "1A573F7EA2F8506EB4EF9F99DFF3DF06E37D43ED" : "Parsimmon\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "ScanLog",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ScanLog.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ayanonagon\/Parsimmon.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "1A573F7EA2F8506EB4EF9F99DFF3DF06E37D43ED"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/utopalex\/scanlog.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "1CA9F62C6727ABFB2648CB00729526D9E9BBA0A8"
+    }
+  ]
+}

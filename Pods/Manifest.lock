@@ -1,0 +1,22 @@
+PODS:
+  - Mantle (2.0.7):
+    - Mantle/extobjc (= 2.0.7)
+  - Mantle/extobjc (2.0.7)
+  - Parsimmon (0.5.0)
+  - SpeechKit (2.1.5)
+
+DEPENDENCIES:
+  - Mantle
+  - Parsimmon (from `~/dev/native/Parsimmon`)
+  - SpeechKit
+
+EXTERNAL SOURCES:
+  Parsimmon:
+    :path: "~/dev/native/Parsimmon"
+
+SPEC CHECKSUMS:
+  Mantle: bc40bb061d8c2c6fb48d5083e04d928c3b7f73d9
+  Parsimmon: ffe7bb3031e5bc3ce1cf8519e0fe544758e39a42
+  SpeechKit: 0ad957204f9ad123349844338856e89bcea723bd
+
+COCOAPODS: 0.39.0
