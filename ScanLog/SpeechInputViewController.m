@@ -21,6 +21,7 @@ static NSString* const SKSAppKey = @"ba274267cf24d93df5550d0b7997294994318874436
 @property (weak, nonatomic) IBOutlet UITextField *inputField;
 
 @property (strong, nonatomic) CrazyClass* crazy;
+@property (strong, nonatomic) NSString* currentNoun;
 
 @end
 
@@ -36,6 +37,9 @@ static NSString* const SKSAppKey = @"ba274267cf24d93df5550d0b7997294994318874436
 -(void)resetSession
 {
     self.transaction = [self.session recognizeWithType:SKTransactionSpeechTypeDictation detection:SKTransactionEndOfSpeechDetectionNone language:@"deu-DEU" delegate:self];
+    self.currentNoun = @"";
+    self.inputField.attributedText = nil;
+    self.inputField.text = nil;
 }
 
 - (IBAction)stopSession:(id)sender
@@ -51,15 +55,10 @@ static NSString* const SKSAppKey = @"ba274267cf24d93df5550d0b7997294994318874436
 
 - (IBAction)sendToServer:(id)sender
 {
-    NSMutableArray* nouns = [[NSMutableArray alloc] init];
-    for (ScanLogTaggedToken* token in [self.crazy tagTokensInText:self.inputField.text]) {
-        if([token.tag isEqualToString:@"Noun"]) {
-            [nouns addObject:token.token];
-        }
-    }
+    NSString* sendStr = self.currentNoun.length > 0 ? self.currentNoun : self.inputField.text;
     
-    if (nouns.count > 0) {
-        [self putElement:nouns.firstObject];
+    if (sendStr > 0) {
+        [self putElement:sendStr];
     }
     
     [self resetSession];
@@ -106,14 +105,33 @@ static NSString* const SKSAppKey = @"ba274267cf24d93df5550d0b7997294994318874436
 {
     //Take the best result
     NSString* topRecognitionText = [recognition text];
+
+    UIFont *attributedFont = [UIFont fontWithName:@"Helvetica-Bold" size:14.0];
+    NSDictionary *defaultAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                       attributedFont, NSFontAttributeName,
+                                       [UIColor blackColor],                                                                                                        NSForegroundColorAttributeName, nil];
+    NSDictionary *tokenAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     attributedFont, NSFontAttributeName,
+                                     [UIColor redColor],                                                                                                        NSForegroundColorAttributeName,
+                                     [UIColor greenColor],                                                                                                        NSBackgroundColorAttributeName, nil];
     
-    self.inputField.text = topRecognitionText;
+    NSMutableArray* nouns = [[NSMutableArray alloc] init];
+    for (ScanLogTaggedToken* token in [self.crazy tagTokensInText:topRecognitionText]) {
+        if([token.tag isEqualToString:@"Noun"]) {
+            [nouns addObject:token.token];
+        }
+    }
     
-    //Or iterate through the NBest list
-    NSArray* nBest = [recognition details];
-    for (SKRecognizedPhrase* phrase in nBest) {
-        NSString* text = [phrase text];
-        int confidence = [phrase confidence];
+    if(nouns.count > 0) {
+        
+        NSString* strToSend = [nouns componentsJoinedByString:@" "];
+        NSRange tokenRange = [topRecognitionText rangeOfString:strToSend];
+    
+        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:topRecognitionText attributes:defaultAttributes];
+        
+        [attributedString setAttributes:tokenAttributes range:tokenRange];
+        self.inputField.attributedText = attributedString;
+        self.currentNoun = strToSend;
     }
 }
 
