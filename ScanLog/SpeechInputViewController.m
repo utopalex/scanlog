@@ -64,7 +64,7 @@ static NSString* const SKSAppKey = @"ba274267cf24d93df5550d0b7997294994318874436
     NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
     
     if([responseCode statusCode] != 200){
-        NSLog(@"Error getting %@, HTTP status code %i", url, [responseCode statusCode]);
+        NSLog(@"Error getting %@, HTTP status code %li", url, (long)[responseCode statusCode]);
         return nil;
     }
     
@@ -135,10 +135,8 @@ static NSString* const SKSAppKey = @"ba274267cf24d93df5550d0b7997294994318874436
     NSError* error;
     NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
     [request setHTTPBody:postData];
-    
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
 
+    NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSLog(@"Here we are!");
     }];
