@@ -87,7 +87,7 @@
             </objects>
             <point key="canvasLocation" x="1188" y="660"/>
         </scene>
-        <!--Sprachen-->
+        <!--Sprechen-->
         <scene sceneID="E5H-Sa-JxQ">
             <objects>
                 <viewController id="ROn-JW-coZ" customClass="SpeechInputViewController" sceneMemberID="viewController">
@@ -193,7 +193,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Sprachen" image="second" selectedImage="second" id="bMd-VA-YYV"/>
+                    <tabBarItem key="tabBarItem" title="Sprechen" image="second" selectedImage="second" id="bMd-VA-YYV"/>
                     <connections>
                         <outlet property="inputField" destination="y6D-YA-xl9" id="xRK-5u-oUq"/>
                     </connections>
