@@ -103,9 +103,9 @@ static NSString* const SKSAppKey = @"ba274267cf24d93df5550d0b7997294994318874436
 
 - (IBAction)sendToServer:(id)sender
 {
-    NSString* noun = self.currentNoun.length > 0 ? self.currentNoun : self.inputField.text;
+    NSString* sendStr = self.currentNoun.length > 0 ? self.currentNoun : self.inputField.text;
     
-    NSString* sendStr = [self getMatchingProductTitleFromBarcoo:noun];
+//    NSString* sendStr = [self getMatchingProductTitleFromBarcoo:noun];
     
     if (sendStr > 0) {
         [self putElement:sendStr];
