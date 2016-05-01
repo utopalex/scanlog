@@ -53,9 +53,59 @@ static NSString* const SKSAppKey = @"ba274267cf24d93df5550d0b7997294994318874436
     [self resetSession];
 }
 
+- (NSString *) getDataFrom:(NSString *)url{
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setHTTPMethod:@"GET"];
+    [request setURL:[NSURL URLWithString:url]];
+    
+    NSError *error = [[NSError alloc] init];
+    NSHTTPURLResponse *responseCode = nil;
+    
+    NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
+    
+    if([responseCode statusCode] != 200){
+        NSLog(@"Error getting %@, HTTP status code %i", url, [responseCode statusCode]);
+        return nil;
+    }
+    
+    return [[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding];
+}
+
+- (NSString *) getMatchingProductTitleFromBarcoo:(NSString *)noun{
+    NSString *urlString = [NSString stringWithFormat:@"https://www.barcoo.com/search/select?q=%@", noun];
+    NSString *result = [self getDataFrom:urlString];
+
+    NSData* data = [result dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSError *error = nil;
+    id object = [NSJSONSerialization
+                 JSONObjectWithData:data
+                 options:0
+                 error:&error];
+    
+    if(error) {
+        NSLog(@"json was malformed");
+    }
+    
+    if([object isKindOfClass:[NSDictionary class]])
+    {
+        NSDictionary *parsed = object;
+        NSDictionary *rp = [parsed objectForKey:@"response"];
+        NSArray *products = [rp objectForKey:@"docs"];
+        NSDictionary *first_product = [products firstObject];
+        NSString *title = [first_product objectForKey:@"title"];
+        return title;
+    }
+    return @"";
+}
+
+
+
 - (IBAction)sendToServer:(id)sender
 {
-    NSString* sendStr = self.currentNoun.length > 0 ? self.currentNoun : self.inputField.text;
+    NSString* noun = self.currentNoun.length > 0 ? self.currentNoun : self.inputField.text;
+    
+    NSString* sendStr = [self getMatchingProductTitleFromBarcoo:noun];
     
     if (sendStr > 0) {
         [self putElement:sendStr];
